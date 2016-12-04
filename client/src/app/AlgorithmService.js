@@ -1,36 +1,64 @@
-export default function () {
-	const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const algorithm = (function () {
 	const sampleSize = 100;
 	const rangeStart = parseInt(Math.random() * 100);
 	const n = 28 * 28; //number of features
-	const X0 = getTrainingSample();
+	let X0, testX;
+	getTrainingSample();
 	const A = (new Array(X0.length)).fill(new Array(n));
 	trainAlgorithm();
 	const service = {
 		generateDigit,
+		getStatistics,
 		recognize
 	};
 
 	return service;
 
 	/* Generate random variable that is not in the training sample */
-	function generateDigit(digit) {
-		const start = rangeStart + sampleSize;
-		const end = mnist[digit].length;
-		return mnist[digit]
-			.get(parseInt(start + (end - start) * Math.random()))
-			.map(pixel => pixel > 0.15 ? 1 : 0);
+	function generateDigit() {
+		return testX[parseInt(testX.length * Math.random())];
 	}
 
 	function getTrainingSample() {
-		return digits.map(digit => {
-			const digitClass = mnist[digit].range(rangeStart, rangeStart + sampleSize);
-			return digitClass.map((digitArray) => {
-				return digitArray.map(digit => {
+		const set = mnist.set(1000, 1000);
+		X0 = set.training;
+		testX = set.test;
+		X0 = X0.reduce((prev, curr) => {
+			const digit = curr.output.indexOf(1);
+			if (prev[digit]) {
+				prev[digit].push(curr.input.map(digit => {
 					return digit > 0.15 ? 1 : 0;
-				});
-			});
+				}));
+			}
+			else {
+				prev[digit] = [curr.input.map(digit => {
+					return digit > 0.15 ? 1 : 0;
+				})];
+			}
+			return prev;
+		}, []);
+		testX = testX.map(digitData => {
+			return {
+				input: digitData.input.map(digit => {
+					return digit > 0.15 ? 1 : 0;
+				}),
+				output: digitData.output.indexOf(1)
+			};
 		});
+	}
+
+	function getStatistics() {
+		const succeeded = testX.reduce((prev, curr) => {
+			const recognized = recognize(curr.input);
+			if (recognized.index === curr.output) {
+				prev++;
+			}
+			return prev;
+		}, 0);
+		return {
+			total: testX.length,
+			succeeded
+		};
 	}
 
 	function trainAlgorithm() {
@@ -94,4 +122,6 @@ export default function () {
 			...result
 		};
 	}
-}
+}());
+
+export {algorithm};

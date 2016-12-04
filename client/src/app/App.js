@@ -5,7 +5,6 @@ import {Sidebar} from './Sidebar';
 import Algorithm from './Algorithm';
 import {Statistics} from './Statistics';
 
-import 'react-select/dist/react-select.css';
 import './App.scss';
 
 const App = reactStamp(React).compose({
