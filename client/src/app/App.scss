@@ -1,0 +1,80 @@
+@import '../../assets/_variables.scss';
+
+@font-face {
+	font-family: Arcon-Regular;
+	src: url('../../assets/fonts/Arcon-Regular.otf');
+}
+
+body {
+	font-family: Arcon-Regular, Arial, sans serif;
+	font-size: 18px;
+	margin: 0;
+}
+
+.app {
+	position: relative;
+}
+
+.content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	padding-top: $top-padding;
+	box-sizing: border-box;
+	float: left;
+	text-align: left;
+	overflow: auto;
+
+	.algorithm-content {
+		width: 100%;
+		height: calc(100% - 20px);
+		text-align: center;
+
+		& > div {
+			margin-bottom: 20px;
+		}
+
+		.select-container {
+			display: inline-block;
+			width: 200px;
+		}
+
+		.results-container {
+			height: 40%;
+			margin-top: 40px;
+			color: $secondary-color;
+			overflow: auto;
+
+			.result-table {
+				margin: 0 auto;
+
+				td, th {
+					padding: 5px;
+				}
+			}
+		}
+	}
+}
+
+.btn {
+	padding: 0.5rem;
+	background: transparent;
+	border: 1px solid;
+	cursor: pointer;
+	font-size: 1rem;
+	font-family: Arcon-Regular, Arial, sans serif;
+	text-transform: uppercase;
+
+	&:hover {
+		color: $secondary-color;
+		border-color: $secondary-color;
+	}
+}
+
+/* override react-select styles*/
+.is-focused:not(.is-open) > .Select-control {
+	border-color: rgba(0, 0, 0, 0.3);
+}
