@@ -1,7 +1,6 @@
 import React from 'react';
 import reactStamp from 'react-stamp';
 import {algorithm} from './AlgorithmService';
-console.log(algorithm);
 
 const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(digit => {
 	return {value: digit, label: digit}
