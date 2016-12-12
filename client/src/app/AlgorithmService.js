@@ -1,5 +1,5 @@
 const algorithm = (function () {
-	const sampleSize = 100;
+	const sampleSize = 1000;
 	const rangeStart = parseInt(Math.random() * 100);
 	const n = 28 * 28; //number of features
 	let X0, testX;
