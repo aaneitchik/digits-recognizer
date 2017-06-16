@@ -1,36 +1,92 @@
+const path = require('path');
+const webpack = require('webpack');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+	.BundleAnalyzerPlugin;
+
+const PRODUCTION = process.env.NODE_ENV === 'production';
+
+const plugins = PRODUCTION
+	? [
+			new webpack.optimize.CommonsChunkPlugin({
+				name: 'vendor',
+				minChunks: Infinity,
+				filename: '[name].[hash].js'
+			}),
+			new webpack.DefinePlugin({
+				'process.env': {
+					NODE_ENV: JSON.stringify('production')
+				}
+			}),
+			new webpack.optimize.UglifyJsPlugin({
+				compress: {
+					warnings: false,
+					screw_ie8: true,
+					conditionals: true,
+					unused: true,
+					comparisons: true,
+					sequences: true,
+					dead_code: true,
+					evaluate: true,
+					if_return: true,
+					join_vars: true
+				},
+				output: {
+					comments: false
+				}
+			}),
+	        new BundleAnalyzerPlugin()
+		]
+	: [];
+
 module.exports = {
 	entry: './client/src/index.js',
 	output: {
-		filename: 'bundle.js',
-		path: __dirname,
-		publicPath: '/'
+		path: path.join(__dirname, 'dist'),
+		publicPath: '/',
+		filename: '[name].[hash].js'
 	},
-	devtool: 'source-map',
+	devtool: PRODUCTION ? false : 'source-map',
+	plugins: plugins,
 	module: {
-		loaders: [{
-			test: /\.js$/,
-			exclude: /node_modules/,
-			loader: 'babel'
-		}, {
-			test: /\.css$/,
-			loader: 'style!css'
-		}, {
-			test: /\.less$/,
-			loader: "style!css!less"
-		}, {
-			test: /\.scss$/,
-			loader: 'style!css!sass'
-		}, {
-			test: /\.(eot|svg|otf|ttf|woff|woff2)$/,
-			loader: 'file?name=[path][name].[ext]'
-		}]
+		loaders: [
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				loader: 'babel-loader'
+			},
+			{
+				test: /\.scss$/,
+				use: [
+					{
+						loader: 'style-loader',
+						options: {
+							insertAt: 'top'
+						}
+					},
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: true,
+							importLoaders: 1
+						}
+					},
+					{
+						loader: 'sass-loader'
+					}
+				]
+			},
+			{
+				test: /\.(eot|svg|otf|ttf|woff|woff2)$/,
+				loader: 'file-loader',
+				options: {
+					name: '[path][name].[ext]'
+				}
+			}
+		]
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx']
-	},
-	devServer: {
-		port: 8001,
-		contentBase: './',
-		historyApiFallback: true
+		extensions: ['.js', '.jsx']
 	}
 };

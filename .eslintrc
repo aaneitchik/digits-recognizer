@@ -1,0 +1,17 @@
+{
+	"extends": [
+		"airbnb",
+		"prettier",
+		"prettier/react"
+	],
+	"plugins": [
+		"prettier"
+	],
+	"rules": {
+		"linebreak-style": ["error", "windows"],
+		"no-underscore-dangle": ["error", { "allow": ["_id"] }],
+		"no-use-before-define": ["error", { "functions": false }],
+		"no-tabs": 0,
+		"prettier/prettier": ["error", { "singleQuote": true, "useTabs": true, "tabWidth": 4 }]
+	}
+}
