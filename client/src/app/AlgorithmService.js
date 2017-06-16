@@ -1,10 +1,13 @@
-const algorithm = (function () {
+/* global mnist */
+
+const algorithm = (function() {
 	const sampleSize = 1000;
-	const rangeStart = parseInt(Math.random() * 100);
-	const n = 28 * 28; //number of features
-	let X0, testX;
+	const rangeStart = parseInt(Math.random() * 100, 10);
+	const n = 28 * 28; // number of features
+	let X0;
+	let testX;
 	getTrainingSample();
-	const A = (new Array(X0.length)).fill(new Array(n));
+	const A = new Array(X0.length).fill(new Array(n));
 	trainAlgorithm();
 	const service = {
 		generateDigit,
@@ -16,7 +19,7 @@ const algorithm = (function () {
 
 	/* Generate random variable that is not in the training sample */
 	function generateDigit() {
-		return testX[parseInt(testX.length * Math.random())];
+		return testX[parseInt(testX.length * Math.random(), 10)];
 	}
 
 	function getTrainingSample() {
@@ -26,14 +29,17 @@ const algorithm = (function () {
 		X0 = X0.reduce((prev, curr) => {
 			const digit = curr.output.indexOf(1);
 			if (prev[digit]) {
-				prev[digit].push(curr.input.map(digit => {
-					return digit > 0.15 ? 1 : 0;
-				}));
-			}
-			else {
-				prev[digit] = [curr.input.map(digit => {
-					return digit > 0.15 ? 1 : 0;
-				})];
+				prev[digit].push(
+					curr.input.map(digit => {
+						return digit > 0.15 ? 1 : 0;
+					})
+				);
+			} else {
+				prev[digit] = [
+					curr.input.map(digit => {
+						return digit > 0.15 ? 1 : 0;
+					})
+				];
 			}
 			return prev;
 		}, []);
@@ -69,8 +75,9 @@ const algorithm = (function () {
 			/* step 2,3 */
 			B[i] = new Array(n);
 			for (let t = 0; t < n; t++) {
-				B[i][t] = X0[i].reduce((sum, next) => {
-						return sum += next[t];
+				B[i][t] =
+					X0[i].reduce((sum, next) => {
+						return (sum += next[t]);
 					}, 0) / X0[i].length;
 			}
 		}
@@ -98,7 +105,7 @@ const algorithm = (function () {
 				let num = 0;
 				let denum = 0;
 				for (let j = 0; j < n; j++) {
-					let t = (X0[i][x][j] === X[j]) ? 2 : 1;
+					let t = X0[i][x][j] === X[j] ? 2 : 1;
 					num += Math.pow(-1, t) * A[i][j];
 					denum += A[i][j];
 				}
@@ -107,21 +114,24 @@ const algorithm = (function () {
 			}
 		}
 
-		const closenessArray = fX.map((fxi) => {
+		const closenessArray = fX.map(fxi => {
 			return fxi.reduce((max, next) => {
 				return Math.max(max, next);
 			}, 0);
 		});
 
-		const result = closenessArray.reduce((prev, curr, index) => {
-			return curr > prev.max ? {max: curr, index} : prev;
-		}, {max: 0, index: 0});
+		const result = closenessArray.reduce(
+			(prev, curr, index) => {
+				return curr > prev.max ? { max: curr, index } : prev;
+			},
+			{ max: 0, index: 0 }
+		);
 
 		return {
 			closenessArray,
 			...result
 		};
 	}
-}());
+})();
 
-export {algorithm};
+export { algorithm };

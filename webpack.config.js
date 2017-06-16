@@ -36,23 +36,23 @@ const plugins = PRODUCTION
 					comments: false
 				}
 			}),
-	        new BundleAnalyzerPlugin()
+			new BundleAnalyzerPlugin()
 		]
 	: [];
 
 module.exports = {
-	entry: './client/src/index.js',
+	entry: './client/src/index.jsx',
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '/',
 		filename: '[name].[hash].js'
 	},
 	devtool: PRODUCTION ? false : 'source-map',
-	plugins: plugins,
+	plugins,
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
 				loader: 'babel-loader'
 			},
