@@ -36,6 +36,11 @@ const plugins = PRODUCTION
 					comments: false
 				}
 			}),
+			new ExtractTextPlugin('styles.css'),
+			new HTMLWebpackPlugin({
+				filename: 'index.html',
+				inject: 'body'
+			}),
 			new BundleAnalyzerPlugin()
 		]
 	: [];
@@ -44,7 +49,7 @@ module.exports = {
 	entry: './client/src/index.jsx',
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/',
+		publicPath: '',
 		filename: '[name].[hash].js'
 	},
 	devtool: PRODUCTION ? false : 'source-map',
