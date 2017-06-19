@@ -7,13 +7,21 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
+const extractSass = new ExtractTextPlugin({
+	filename: 'styles.[contenthash].css',
+	disable: !PRODUCTION
+});
+
+const commonPlugins = [
+	new HTMLWebpackPlugin({
+		filename: 'index.html',
+		inject: 'body'
+	}),
+	extractSass
+];
+
 const plugins = PRODUCTION
 	? [
-			new webpack.optimize.CommonsChunkPlugin({
-				name: 'vendor',
-				minChunks: Infinity,
-				filename: '[name].[hash].js'
-			}),
 			new webpack.DefinePlugin({
 				'process.env': {
 					NODE_ENV: JSON.stringify('production')
@@ -34,16 +42,13 @@ const plugins = PRODUCTION
 				},
 				output: {
 					comments: false
-				}
+				},
+				exclude: /bundle/
 			}),
-			new ExtractTextPlugin('styles.css'),
-			new HTMLWebpackPlugin({
-				filename: 'index.html',
-				inject: 'body'
-			}),
-			new BundleAnalyzerPlugin()
+			...commonPlugins
+			// new BundleAnalyzerPlugin()
 		]
-	: [];
+	: [...commonPlugins];
 
 module.exports = {
 	entry: './client/src/index.jsx',
@@ -63,24 +68,21 @@ module.exports = {
 			},
 			{
 				test: /\.scss$/,
-				use: [
-					{
-						loader: 'style-loader',
-						options: {
-							insertAt: 'top'
+				use: extractSass.extract({
+					use: [
+						{
+							loader: 'css-loader',
+							options: {
+								sourceMap: true,
+								importLoaders: 1
+							}
+						},
+						{
+							loader: 'sass-loader'
 						}
-					},
-					{
-						loader: 'css-loader',
-						options: {
-							sourceMap: true,
-							importLoaders: 1
-						}
-					},
-					{
-						loader: 'sass-loader'
-					}
-				]
+					],
+					fallback: 'style-loader'
+				})
 			},
 			{
 				test: /\.(eot|svg|otf|ttf|woff|woff2)$/,
