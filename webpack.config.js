@@ -42,10 +42,11 @@ const plugins = PRODUCTION
 				},
 				output: {
 					comments: false
-				}
+				},
+				exclude: /mnist/
 			}),
-			...commonPlugins
-			// new BundleAnalyzerPlugin()
+			...commonPlugins,
+			new BundleAnalyzerPlugin()
 		]
 	: [...commonPlugins];
 
@@ -62,11 +63,11 @@ module.exports = {
 	devtool: PRODUCTION ? false : 'source-map',
 	plugins,
 	module: {
-		noParse: /bower_components|mnist/,
+		noParse: /mnist/,
 		loaders: [
 			{
 				test: /\.(js|jsx)$/,
-				exclude: /node_modules|bower_components|mnist/,
+				exclude: /node_modules|mnist/,
 				loader: 'babel-loader'
 			},
 			{
@@ -97,8 +98,6 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['.js', '.jsx'],
-		modules: ['bower_components', 'node_modules'],
-		descriptionFiles: ['bower.json', 'package.json']
+		extensions: ['.js', '.jsx']
 	}
 };
