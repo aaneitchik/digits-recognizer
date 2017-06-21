@@ -14,8 +14,8 @@ const extractSass = new ExtractTextPlugin({
 
 const commonPlugins = [
 	new HTMLWebpackPlugin({
-		filename: 'index.html',
-		inject: 'body'
+		template: 'index-template.ejs',
+		inject: false
 	}),
 	extractSass
 ];
@@ -42,8 +42,7 @@ const plugins = PRODUCTION
 				},
 				output: {
 					comments: false
-				},
-				exclude: /bundle/
+				}
 			}),
 			...commonPlugins
 			// new BundleAnalyzerPlugin()
@@ -51,7 +50,10 @@ const plugins = PRODUCTION
 	: [...commonPlugins];
 
 module.exports = {
-	entry: './client/src/index.jsx',
+	entry: {
+		mnist: './bower_components/mnist/dist/mnist.js',
+		bundle: './client/src/index.jsx'
+	},
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '',
@@ -60,10 +62,11 @@ module.exports = {
 	devtool: PRODUCTION ? false : 'source-map',
 	plugins,
 	module: {
+		noParse: /bower_components|mnist/,
 		loaders: [
 			{
 				test: /\.(js|jsx)$/,
-				exclude: /node_modules/,
+				exclude: /node_modules|bower_components|mnist/,
 				loader: 'babel-loader'
 			},
 			{
@@ -94,6 +97,8 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['.js', '.jsx']
+		extensions: ['.js', '.jsx'],
+		modules: ['bower_components', 'node_modules'],
+		descriptionFiles: ['bower.json', 'package.json']
 	}
 };

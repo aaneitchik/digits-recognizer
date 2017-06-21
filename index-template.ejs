@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Digits recognizer</title>
+      <% for (var css in htmlWebpackPlugin.files.css) { %>
+      <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+      <% } %>
+</head>
+<body>
+<div id="app-container"></div>
+<script src="<%=htmlWebpackPlugin.files.chunks['mnist'].entry %>"></script>
+<script src="<%=htmlWebpackPlugin.files.chunks['bundle'].entry %>"></script>
+</body>
+</html>
