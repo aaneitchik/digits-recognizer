@@ -79,8 +79,3 @@ body {
 		border-color: $secondary-color;
 	}
 }
-
-/* override react-select styles*/
-.is-focused:not(.is-open) > .Select-control {
-	border-color: rgba(0, 0, 0, 0.3);
-}

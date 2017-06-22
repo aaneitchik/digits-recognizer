@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { algorithm } from './AlgorithmService';
+import algorithm from './AlgorithmService';
 
 class Statistics extends React.Component {
 	constructor() {
@@ -43,4 +43,4 @@ class Statistics extends React.Component {
 	}
 }
 
-export { Statistics };
+export default Statistics;

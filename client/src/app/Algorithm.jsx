@@ -1,7 +1,11 @@
 import React from 'react';
-import { algorithm } from './AlgorithmService';
+import algorithm from './AlgorithmService';
 
 /* global document, mnist */
+
+const tableHeader = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(digit =>
+	<th key={digit}><b>{digit}</b></th>
+);
 
 class Algorithm extends React.Component {
 	constructor() {
@@ -28,9 +32,6 @@ class Algorithm extends React.Component {
 		if (!this.state.result) {
 			return '';
 		}
-		const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(digit =>
-			<th key={digit}><b>{digit}</b></th>
-		);
 		const closeness = this.state.result.closenessArray.map(item =>
 			<td key={item}>{item.toFixed(3)}</td>
 		);
@@ -38,7 +39,7 @@ class Algorithm extends React.Component {
 			<div>
 				<table className="result-table">
 					<thead>
-						<tr>{indices}</tr>
+						<tr>{tableHeader}</tr>
 					</thead>
 					<tbody>
 						<tr>{closeness}</tr>
@@ -50,7 +51,7 @@ class Algorithm extends React.Component {
 		);
 	}
 	render() {
-		const generatedDigit = this.state.generatedDigit.output
+		const generatedDigit = this.state.generatedDigit.output !== undefined
 			? <p>Generated number: {this.state.generatedDigit.output}</p>
 			: '';
 		const recognizeBtn = this.state.generatedDigit.input

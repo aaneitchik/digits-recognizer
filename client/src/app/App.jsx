@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Sidebar } from './Sidebar';
+import Sidebar from './Sidebar';
 import Algorithm from './Algorithm';
-import { Statistics } from './Statistics';
+import Statistics from './Statistics';
 
 import './App.scss';
 

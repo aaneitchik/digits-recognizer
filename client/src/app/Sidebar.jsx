@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Sidebar.scss';
 
@@ -27,4 +28,8 @@ function getMenuItems(hoverCallback) {
 	);
 }
 
-export { Sidebar };
+Sidebar.propTypes = {
+	onMenuHover: PropTypes.func.isRequired
+};
+
+export default Sidebar;
