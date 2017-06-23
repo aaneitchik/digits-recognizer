@@ -136,3 +136,4 @@ bower_components
 
 #node-gyp build folder
 build/config.gypi
+dist/
