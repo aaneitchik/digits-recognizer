@@ -1,6 +1,13 @@
 import React from 'react';
+import { Circle } from 'react-progressbar.js';
 
 import algorithm from './AlgorithmService';
+
+const containerStyle = {
+	height: '100px',
+	width: '100px',
+	margin: '0 auto'
+};
 
 class Statistics extends React.Component {
 	constructor() {
@@ -9,16 +16,20 @@ class Statistics extends React.Component {
 			loading: false
 		};
 	}
+	setProgress = progress => {
+		this.setState(prevState => ({ ...prevState, progress }));
+	};
 	getStatistics = () => {
-		this.setState({ loading: true });
+		this.setState({ loading: true, progress: 0 });
 		setTimeout(() => {
-			const statistics = algorithm.getStatistics();
-			this.setState({ ...statistics, loading: false });
-		}, 0);
+			algorithm.getStatistics(this.setProgress).then(result => {
+				this.setState({ ...result, loading: false });
+			});
+		});
 	};
 	render() {
-		const { total, succeeded, loading } = this.state;
-		let results = this.state.total
+		const { total, succeeded, loading, progress } = this.state;
+		let results = total
 			? <div className="results-container">
 					<p><b>Total: </b>{total}</p>
 					<p>
@@ -27,7 +38,13 @@ class Statistics extends React.Component {
 				</div>
 			: '';
 		if (loading) {
-			results = 'Loading...';
+			results = (
+				<Circle
+					progress={progress}
+					text={`${progress * 100} %`}
+					containerStyle={containerStyle}
+				/>
+			);
 		}
 
 		return (

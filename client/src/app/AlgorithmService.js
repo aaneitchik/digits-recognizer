@@ -39,15 +39,36 @@ function getTrainingSample() {
 	return { X0: training, testX: test };
 }
 
-function getStatistics() {
-	const succeeded = testX.filter(digitData => {
-		const recognized = recognize(digitData.input);
-		return recognized.index === digitData.output;
-	}).length;
-	return {
-		total: testX.length,
-		succeeded
-	};
+function getStatistics(setProgress) {
+	const totalDigits = testX.length;
+	let succeeded = 0;
+	let index = 0;
+	let resolveStatistics;
+	setTimeout(recognizeDigit);
+
+	return new Promise(resolve => {
+		resolveStatistics = resolve;
+	});
+
+	function recognizeDigit() {
+		const recognized = recognize(testX[index].input);
+		if (recognized.index === testX[index].output) {
+			succeeded = succeeded + 1;
+		}
+		const progress = index / totalDigits;
+		if (progress * 100 % 5 === 0) {
+			setProgress(progress);
+		}
+		if (index !== totalDigits - 1) {
+			setTimeout(recognizeDigit);
+		} else {
+			resolveStatistics({
+				total: totalDigits,
+				succeeded
+			});
+		}
+		index = index + 1;
+	}
 }
 
 function trainAlgorithm() {

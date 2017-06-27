@@ -5,16 +5,10 @@ import './Sidebar.scss';
 
 const links = ['Try me', 'Statistics'];
 
-/* global window */
-
-const Sidebar = props => {
-	const height = `${window.innerHeight}px`;
-	return (
-		<div className="sidebar" style={{ height }}>
-			{getMenuItems(props.onMenuHover)}
-		</div>
-	);
-};
+const Sidebar = props =>
+	<div className="sidebar">
+		{getMenuItems(props.onMenuHover)}
+	</div>;
 
 function getMenuItems(hoverCallback) {
 	return links.map(item =>

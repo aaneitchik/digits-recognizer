@@ -2,13 +2,13 @@
 
 .sidebar {
 	position: absolute;
-	top: 0;
+	top: 250px;
 	left: 0;
-	width: $sidebar-width;
-	padding-top: 250px;
-	padding-left: 80px;
+	width: auto;
+	padding: 80px;
 	float: left;
 	box-sizing: border-box;
+	border-right: 1px solid #ddd;
 	z-index: 1000;
 
 	.sidebar-item {

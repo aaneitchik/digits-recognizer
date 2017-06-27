@@ -6,8 +6,6 @@ import Statistics from './Statistics';
 
 import './App.scss';
 
-/* global window */
-
 class App extends React.Component {
 	constructor() {
 		super();
@@ -21,14 +19,13 @@ class App extends React.Component {
 		}
 	};
 	render() {
-		const height = `${window.innerHeight}px`;
 		const content = this.state.route === 'Try me'
 			? <Algorithm />
 			: <Statistics />;
 		return (
 			<div className="app">
 				<Sidebar onMenuHover={this.menuItemChanged} />
-				<div className="content" style={{ height }}>
+				<div className="content">
 					{content}
 				</div>
 			</div>
