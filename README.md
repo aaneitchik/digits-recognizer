@@ -22,6 +22,7 @@ Be careful, all the training and recognition happens in the browser, so it loads
     ```sh
     yarn start
     ```
+    and open it on `localhost:3000`,
     or build your own version:
     ```sh
     yarn build
