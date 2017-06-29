@@ -1,6 +1,8 @@
 # Digits recognizer
 
 A university task to recognize mnist handwritten digits.
+
+![Digits recognizer](https://user-images.githubusercontent.com/11046028/27687985-3a612cb4-5cd9-11e7-8af0-1f74e7bed528.png)
 Click [here] to see the demo.
 Be careful, all the training and recognition happens in the browser, so it loads ~20Mb of mnist data.
 
